@@ -1,9 +1,10 @@
 import { Box, Button, TextField, Typography } from '@mui/material';
 import axios from 'axios';
+import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { FormEvent, useState } from 'react';
 
-const LoginPage = () => {
+const LoginPage: NextPage = () => {
     const [token, changeToken] = useState('');
     const router = useRouter();
 

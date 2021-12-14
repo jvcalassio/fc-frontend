@@ -3,11 +3,12 @@ import Head from 'next/head';
 import { AppProps } from 'next/app';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { Container } from '@mui/material';
 import { CacheProvider, EmotionCache } from '@emotion/react';
+
 import createEmotionCache from '../utils/createEmotionCache';
 import theme from '../utils/theme';
 import Navbar from '../components/Navbar';
-import { Container } from '@mui/material';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();

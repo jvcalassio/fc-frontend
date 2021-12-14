@@ -1,4 +1,4 @@
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import {
     Typography,
     Card,
@@ -14,10 +14,10 @@ import Router, { useRouter } from 'next/router';
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
-const OrdersShowPage = () => {
+const OrdersShowPage: NextPage = () => {
     const router = useRouter();
     const { id } = router.query;
-    const { data, error } = useSWR(
+    const { data } = useSWR(
         `${process.env.NEXT_PUBLIC_API_HOST}/orders/${id}`,
         fetcher,
         {
@@ -88,14 +88,14 @@ const OrdersShowPage = () => {
     ) : null;
 };
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getStaticProps: GetStaticProps = async () => {
     return {
         props: {},
         revalidate: 20,
     };
 };
 
-export const getStaticPaths: GetStaticPaths = async (context) => {
+export const getStaticPaths: GetStaticPaths = async () => {
     return {
         paths: [],
         fallback: 'blocking',

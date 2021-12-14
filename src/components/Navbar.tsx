@@ -1,4 +1,4 @@
-import { AppBar, Box, Toolbar, Typography } from '@mui/material';
+import { AppBar, Toolbar, Typography } from '@mui/material';
 import StoreIcon from '@mui/icons-material/Store';
 import theme from '../utils/theme';
 

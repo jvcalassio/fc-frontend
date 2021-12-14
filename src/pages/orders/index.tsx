@@ -1,13 +1,20 @@
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, NextPage } from 'next';
 import Link from 'next/link';
+import Router from 'next/router';
 import { Typography, Link as MuiLink } from '@mui/material';
-import { DataGrid, GridColumns } from '@mui/x-data-grid';
-import axios from 'axios';
+import {
+    DataGrid,
+    GridColumns,
+    GridRenderCellParams,
+    GridValueFormatterParams,
+} from '@mui/x-data-grid';
 import { withIronSessionSsr } from 'iron-session/next';
+import axios from 'axios';
+import useSWR from 'swr';
+
 import { Order, OrderStatus, OrderStatusTranslate } from '../../utils/models';
 import ironConfig from '../../utils/iron-config';
-import useSWR from 'swr';
-import Router from 'next/router';
+
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 interface OrdersPageProps {
@@ -19,7 +26,7 @@ const columns: GridColumns = [
         field: 'id',
         headerName: 'ID',
         width: 300,
-        renderCell: (params) => {
+        renderCell: (params: GridRenderCellParams) => {
             return (
                 <Link href={`/orders/${params.value}`} passHref>
                     <MuiLink>{params.value}</MuiLink>
@@ -46,13 +53,13 @@ const columns: GridColumns = [
         field: 'status',
         headerName: 'Situação',
         width: 110,
-        valueFormatter: (params) =>
+        valueFormatter: (params: GridValueFormatterParams) =>
             OrderStatusTranslate[params.value as OrderStatus],
     },
 ];
 
-const OrdersPage = (props: OrdersPageProps) => {
-    const { data, error } = useSWR(
+const OrdersPage: NextPage<OrdersPageProps> = (props) => {
+    const { data } = useSWR(
         `${process.env.NEXT_PUBLIC_API_HOST}/orders`,
         fetcher,
         {
@@ -61,8 +68,8 @@ const OrdersPage = (props: OrdersPageProps) => {
             refreshWhenOffline: false,
             onError: (error) => {
                 if (
-                    error.response.status === 401 ||
-                    error.response.status === 403
+                    error.response?.status === 401 ||
+                    error.response?.status === 403
                 ) {
                     Router.push('/login');
                 }

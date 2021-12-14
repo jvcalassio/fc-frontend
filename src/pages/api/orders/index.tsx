@@ -22,6 +22,7 @@ async function ordersList(req: NextApiRequest, res: NextApiResponse) {
     } catch (e) {
         console.error(e);
         if (axios.isAxiosError(e)) {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             res.status(e.response!.status).json(e.response?.data);
         } else {
             res.status(500).json({ message: 'Ocorreu um erro interno.' });
