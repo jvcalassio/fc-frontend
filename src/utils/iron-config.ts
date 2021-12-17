@@ -12,7 +12,7 @@ const ironConfig = {
 declare module 'iron-session' {
     interface IronSessionData {
         account?: {
-            id: number;
+            id: string;
             name: string;
             token: string;
         };

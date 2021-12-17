@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import useSWR from 'swr';
-import { OrderStatus, OrderStatusTranslate } from '../../utils/models';
+import { Order, OrderStatusTranslate } from '../../utils/models';
 import Router, { useRouter } from 'next/router';
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
@@ -17,7 +17,7 @@ const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 const OrdersShowPage: NextPage = () => {
     const router = useRouter();
     const { id } = router.query;
-    const { data } = useSWR(
+    const { data }: { data?: Order | undefined } = useSWR<Order>(
         `${process.env.NEXT_PUBLIC_API_HOST}/orders/${id}`,
         fetcher,
         {
@@ -33,8 +33,8 @@ const OrdersShowPage: NextPage = () => {
     );
 
     return data ? (
-        <div style={{ height: 500, width: '100%' }}>
-            <Grid container>
+        <div style={{ width: '100%' }}>
+            <Grid container sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Grid item>
                     <Card>
                         <CardHeader
@@ -64,12 +64,14 @@ const OrdersShowPage: NextPage = () => {
                                 >
                                     R$ {data.amount}
                                 </Typography>
+                                <Typography
+                                    component="span"
+                                    variant="subtitle1"
+                                >
+                                    {new Date(data.created_at).toLocaleString()}
+                                </Typography>
                                 <Typography component="h4" variant="h6">
-                                    {
-                                        OrderStatusTranslate[
-                                            data.status as OrderStatus
-                                        ]
-                                    }
+                                    {OrderStatusTranslate[data.status]}
                                 </Typography>
                             </Box>
                             <ul style={{ listStyle: 'none' }}>

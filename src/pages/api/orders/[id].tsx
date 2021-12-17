@@ -2,6 +2,7 @@ import axios from 'axios';
 import { withIronSessionApiRoute } from 'iron-session/next';
 import { NextApiRequest, NextApiResponse } from 'next';
 import ironConfig from '../../../utils/iron-config';
+import { Order } from '../../../utils/models';
 
 export default withIronSessionApiRoute(ordersList, ironConfig);
 
@@ -13,8 +14,9 @@ async function ordersList(req: NextApiRequest, res: NextApiResponse) {
         return res.status(401).json({ message: 'Unauthenticated.' });
     }
 
+    // recuperar ordem de pagamento especifica
     try {
-        const { data } = await axios.get(
+        const { data }: { data: Order } = await axios.get(
             `${process.env.API_HOST}/orders/${id}`,
             {
                 headers: {

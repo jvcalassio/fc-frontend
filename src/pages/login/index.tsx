@@ -47,9 +47,18 @@ const LoginPage: NextPage = () => {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
+                    sx={{ mt: 3, mb: 1 }}
                 >
                     Login
+                </Button>
+                <Button
+                    type="button"
+                    fullWidth
+                    variant="outlined"
+                    sx={{ mb: 2 }}
+                    onClick={() => router.push('/register')}
+                >
+                    Cadastro
                 </Button>
             </Box>
         </Box>
